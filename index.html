@@ -6,45 +6,103 @@
 <title>Dhamma FM Radio</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600&family=Zen+Dots&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{
-    font-family:"Noto Sans Myanmar",sans-serif;
-    background:radial-gradient(circle at top,#0d0d0d,#000);
-    min-height:100vh;
-    color:#fff;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    align-items:center;
-    text-align:center;
-    padding:40px 20px 25px;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans Myanmar", sans-serif;
+    background: radial-gradient(circle at top, #0d0d0d, #000);
+    min-height: 100vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px 25px;
   }
-  h1{font-family:'Zen Dots',sans-serif;color:#ffcc66;text-shadow:0 0 8px rgba(255,204,102,0.6);}
-  h2{color:#ccc;margin:10px 0 20px;}
-  .player-box{
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(14px);
-    border-radius:20px;
-    padding:30px 25px;
-    box-shadow:0 0 30px rgba(255,204,102,0.15);
-    width:90%;max-width:420px;
+  h1 {
+    font-family: 'Zen Dots', sans-serif;
+    color: #ffcc66;
+    text-shadow: 0 0 8px rgba(255, 204, 102, 0.6);
   }
-  audio{width:100%;margin-top:10px;border-radius:10px;}
-  footer{font-size:0.9rem;color:#bbb;margin-top:20px;}
-  footer a{color:#ffcc66;text-decoration:none;}
-  footer a:hover{text-decoration:underline;}
+  h2 { color: #ccc; margin: 10px 0 20px; }
+  .player-box {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 0 30px rgba(255, 204, 102, 0.15);
+    width: 90%;
+    max-width: 420px;
+  }
+  audio {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  footer {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-top: 20px;
+  }
+  footer a {
+    color: #ffcc66;
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+  .play-btn {
+    margin-top: 15px;
+    background: #ffcc66;
+    color: #000;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .play-btn:hover {
+    background: #ffdb88;
+    transform: scale(1.05);
+  }
 </style>
 </head>
 <body>
   <div class="player-box">
     <h1>🪷 Dhamma FM</h1>
     <h2>Myanmar Online Radio</h2>
-<audio controls autoplay>
-  <source src="http://upanna.on-air.fm/free" type="audio/mpeg">
-</audio>
 
-  <footer>
-    © 2025 <a href="https://upanna.com" target="_blank">Upanna</a> | Dhamma FM Radio
-  </footer>
+    <audio id="radioPlayer" autoplay muted>
+      <source src="http://upanna.on-air.fm/free" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <button class="play-btn" id="playBtn">🔊 Play Radio</button>
+<p>ဓမ္မအသံလွှင့်ဌာန သို့ ဆက်သွယ်လိုပါက +959 33 91 33 88</p>
+    <footer>
+      © 2025 <a href="https://upanna.com" target="_blank">Upanna</a> | Dhamma FM Radio
+    </footer>
+  </div>
+
+  <script>
+    const player = document.getElementById('radioPlayer');
+    const playBtn = document.getElementById('playBtn');
+
+    // Try autoplay on load
+    window.addEventListener('load', async () => {
+      try {
+        await player.play();
+        player.muted = false; // Unmute if autoplay succeeded
+      } catch (err) {
+        console.log('Autoplay blocked, waiting for user interaction...');
+      }
+    });
+
+    // Manual play fallback
+    playBtn.addEventListener('click', async () => {
+      player.muted = false;
+      await player.play();
+      playBtn.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
