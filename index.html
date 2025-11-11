@@ -1,109 +1,81 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dhamma FM Radio</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600&family=Zen+Dots&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: "Noto Sans Myanmar", sans-serif;
-    background: radial-gradient(circle at top, #0d0d0d, #000);
-    min-height: 100vh;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px 25px;
-  }
-  h1 {
-    font-family: 'Zen Dots', sans-serif;
-    color: #ffcc66;
-    text-shadow: 0 0 8px rgba(255, 204, 102, 0.6);
-  }
-  h2 { color: #ccc; margin: 10px 0 20px; }
-  .player-box {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(14px);
-    border-radius: 20px;
-    padding: 30px 25px;
-    box-shadow: 0 0 30px rgba(255, 204, 102, 0.15);
-    width: 90%;
-    max-width: 420px;
-  }
-  audio {
-    width: 100%;
-    margin-top: 10px;
-    border-radius: 10px;
-  }
-  footer {
-    font-size: 0.9rem;
-    color: #bbb;
-    margin-top: 20px;
-  }
-  footer a {
-    color: #ffcc66;
-    text-decoration: none;
-  }
-  footer a:hover { text-decoration: underline; }
-  .play-btn {
-    margin-top: 15px;
-    background: #ffcc66;
-    color: #000;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .play-btn:hover {
-    background: #ffdb88;
-    transform: scale(1.05);
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhamma FM Radio - AutoDJ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600&family=Zen+Dots&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      background: linear-gradient(180deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Zen Dots', sans-serif;
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #222;
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+    audio {
+      width: 300px;
+      outline: none;
+    }
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #555;
+    }
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-  <div class="player-box">
-    <h1>🪷 Dhamma FM</h1>
-    <h2>Myanmar Online Radio</h2>
 
-    <audio id="radioPlayer" autoplay muted>
-      <source src="http://upanna.on-air.fm/free" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
+  <h1>Dhamma FM Radio</h1>
+  <p>AutoDJ Live Streaming</p>
 
-    <button class="play-btn" id="playBtn">🔊 Play Radio</button>
-<p>ဓမ္မအသံလွှင့်ဌာန သို့ ဆက်သွယ်လိုပါက <br>+959 33 91 33 88 သို့ ဆက်သွယ်ပေးပါ။</p>
-    <footer>
-      © 2025 <a href="https://upanna.com" target="_blank">Upanna</a> | Dhamma FM Radio
-    </footer>
-  </div>
+  <audio id="radioPlayer" controls autoplay>
+    <source src="http://s37.myradiostream.com:16828/" type="audio/mpeg">
+    သင့် browser မှ audio player ကို မထောက်ပံ့ပါ။
+  </audio>
+
+  <div id="status" class="status">🔄 အသံချိတ်ဆက်နေပါသည်...</div>
+
+  <footer>Streaming from s37.myradiostream.com:16828 | © 2025 Dhamma FM</footer>
 
   <script>
     const player = document.getElementById('radioPlayer');
-    const playBtn = document.getElementById('playBtn');
+    const status = document.getElementById('status');
 
-    // Try autoplay on load
-    window.addEventListener('load', async () => {
-      try {
-        await player.play();
-        player.muted = false; // Unmute if autoplay succeeded
-      } catch (err) {
-        console.log('Autoplay blocked, waiting for user interaction...');
-      }
+    player.addEventListener('playing', () => {
+      status.textContent = '🎶 အသံထွက်နေပါပြီ...';
+      status.style.color = 'green';
     });
-
-    // Manual play fallback
-    playBtn.addEventListener('click', async () => {
-      player.muted = false;
-      await player.play();
-      playBtn.style.display = 'none';
+    player.addEventListener('pause', () => {
+      status.textContent = '⏸ အားနည်းနေပါသည်။';
+      status.style.color = 'orange';
+    });
+    player.addEventListener('error', () => {
+      status.textContent = '⚠️ Stream မချိတ်ဆက်နိုင်ပါ။';
+      status.style.color = 'red';
     });
   </script>
+
 </body>
 </html>
-
