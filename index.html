@@ -1,24 +1,77 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhamma FM Radio - GitHub Version</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 10%; background: #f7f9fc; }
-    h1 { color: #003366; }
-    audio { width: 320px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhamma FM Radio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&family=Zen+Dots&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --main-color: #f2b705;
+    --bg-dark: #0b0b0b;
+    --bg-card: #1a1a1a;
+  }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Myanmar", sans-serif;
+    background: var(--bg-dark);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .player {
+    background: var(--bg-card);
+    border-radius: 24px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    padding: 50px 30px;
+    max-width: 420px;
+    text-align: center;
+  }
+  .logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 2px solid var(--main-color);
+  }
+  .title {
+    font-family: "Zen Dots", cursive;
+    color: var(--main-color);
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 25px;
+  }
+  audio {
+    width: 100%;
+    outline: none;
+    border-radius: 12px;
+  }
+  footer {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 25px;
+  }
+</style>
 </head>
 <body>
+  <div class="player">
+    <img src="logo.png" alt="Dhamma FM Radio Logo" class="logo">
+    <div class="title">📻 Dhamma FM Radio</div>
+    <div class="subtitle">ဓမ္မအသံ ရေဒီယို</div>
 
-  <h1>📻 Dhamma FM Radio</h1>
-  <p>Streaming via Proxy (GitHub version)</p>
+    <audio controls autoplay>
+      <source src="http://upanna.on-air.fm/free/" type="audio/mpeg">
+      Browser သံထုတ်ပေးမှု မပံ့ပိုးပါ။
+    </audio>
 
-  <audio controls autoplay>
-    <source src="https://cors-proxy.fringe.zone/http://upanna.on-air.fm/free" type="audio/mpeg">
-    သင့် browser မှ audio player ကို မထောက်ပံ့ပါ။
-  </audio>
-
+    <footer>© 2025 Dhamma FM Radio</footer>
+  </div>
 </body>
 </html>
