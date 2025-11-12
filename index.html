@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Dhamma FM Radio</title>
+  <title>Dhamma FM Live</title>
   <style>
     body {
       margin: 0;
@@ -23,66 +23,69 @@
       padding: 30px 40px;
       border-radius: 20px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-      max-width: 320px;
+      max-width: 360px;
     }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #ffe066;
-    }
-    p {
-      font-size: 14px;
-      color: #ddd;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
+    h1 { font-size: 28px; margin-bottom: 10px; color: #ffe066; }
+    p { font-size: 14px; color: #ddd; margin: 0 0 20px; }
     button {
-      background: #2196f3;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
+      background: #2196f3; border: none; padding: 10px 25px; border-radius: 8px;
+      color: #fff; font-size: 16px; cursor: pointer;
     }
-    button:hover {
-      background: #1976d2;
-    }
-    .song-title {
-      margin-top: 15px;
-      font-size: 16px;
-      color: #ffeb3b;
-    }
+    button:hover { background: #1976d2; }
+    .song-title { margin-top: 15px; font-size: 16px; color: #ffeb3b; }
   </style>
 </head>
 <body>
 
   <div class="radio-box">
-    <h1>📻 Dhamma FM Radio</h1>
-    <p>၂၄ နာရီ တရားပညာအသံ</p>
+    <h1>📻 Dhamma FM Live</h1>
+    <p>တရားတော်များနှင့် ဓမ္မတေးသံများကို ၂၄ နာရီ တိုက်ရိုက်ထုတ်လွှင့်နေပါသည်။</p>
     <button id="playBtn">▶ Play</button>
     <div class="song-title" id="title">Stopped</div>
   </div>
 
-  <audio id="player" preload="auto" src="https://mmradio.netlify.app/"></audio>
+  <audio id="player" preload="auto"></audio>
 
   <script>
     const player = document.getElementById('player');
     const playBtn = document.getElementById('playBtn');
     const title = document.getElementById('title');
+
+    // 🎵 MP3 playlist (Netlify public URLs)
+    const songs = [
+      {src: "https://mmradio.netlify.app/song1.mp3", name: "Dhamma Song 1"},
+      {src: "https://mmradio.netlify.app/song2.mp3", name: "Dhamma Song 2"},
+      {src: "https://mmradio.netlify.app/song3.mp3", name: "Dhamma Song 3"},
+      {src: "https://mmradio.netlify.app/song4.mp3", name: "Dhamma Song 4"},
+      {src: "https://mmradio.netlify.app/song5.mp3", name: "Dhamma Song 5"}
+    ];
+
+    let current = 0;
     let isPlaying = false;
 
-    // Play/Pause ခလုတ်
+    function playSong(index) {
+      const song = songs[index];
+      player.src = song.src;
+      title.textContent = "Now Playing: " + song.name;
+      player.play().then(() => {
+        isPlaying = true;
+        playBtn.textContent = "⏸ Stop";
+      }).catch(err => {
+        title.textContent = "🔇 Press Play to start sound";
+        console.warn("Playback blocked:", err);
+      });
+    }
+
+    // Song finished → play next
+    player.addEventListener('ended', () => {
+      current++;
+      if (current >= songs.length) current = 0;
+      playSong(current);
+    });
+
     playBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        player.play().then(() => {
-          isPlaying = true;
-          playBtn.textContent = "⏸ Stop";
-          title.textContent = "Now Playing: Dhamma FM Live";
-        }).catch(err => {
-          title.textContent = "🔇 Press Play to start sound";
-          console.warn("Playback blocked:", err);
-        });
+        playSong(current);
       } else {
         player.pause();
         isPlaying = false;
@@ -91,10 +94,9 @@
       }
     });
 
-    // အလိုအလျောက် autoplay မဖြစ်ပါက တစ်ချက်နှိပ်ရုံနဲ့ ဖွင့်နိုင်
     player.addEventListener('error', (e) => {
       console.error("Audio Error:", e);
-      title.textContent = "❌ Error connecting to stream";
+      title.textContent = "❌ Error loading song";
     });
   </script>
 
