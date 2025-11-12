@@ -3,70 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Dhamma FM Player</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center; /* vertical center */
+    justify-content: center; /* horizontal center */
+    background-color: black; /* နောက်ခံအနက် */
+  }
+  audio {
+    width: 300px; /* audio player width */
+  }
+</style>
 </head>
 <body>
 
-<h2>Dhamma FM Live</h2>
-<button id="playBtn">Play</button>
-<div id="status">Stopped</div>
-
-<audio id="player" preload="auto"></audio>
-
-<script>
-const player = document.getElementById('player');
-const playBtn = document.getElementById('playBtn');
-const status = document.getElementById('status');
-
-const songs = [
-  "https://mmradio.netlify.app/songs/song1.mp3",
-  "https://mmradio.netlify.app/songs/song2.mp3",
-  "https://mmradio.netlify.app/songs/song3.mp3",
-  "https://mmradio.netlify.app/songs/song4.mp3",
-  "https://mmradio.netlify.app/songs/song5.mp3"
-  // song6-song10 မထည့်သေးရင် error မဖြစ်ပါ
-];
-
-let current = 0;
-let isPlaying = false;
-
-function playNext() {
-  if (!songs[current]) {
-    current = 0; // loop back to first
-  }
-  player.src = songs[current];
-  status.textContent = "Now Playing: Song " + (current + 1);
-  player.play().catch(err => {
-    status.textContent = "Playback blocked. Click Play";
-    console.warn(err);
-  });
-}
-
-player.addEventListener('ended', () => {
-  current++;
-  if (current >= songs.length) current = 0;
-  playNext();
-});
-
-playBtn.addEventListener('click', () => {
-  if (!isPlaying) {
-    playNext();
-    isPlaying = true;
-    playBtn.textContent = "Pause";
-  } else {
-    player.pause();
-    isPlaying = false;
-    playBtn.textContent = "Play";
-    status.textContent = "Paused";
-  }
-});
-
-player.addEventListener('error', () => {
-  console.warn("Error playing current song, skipping...");
-  current++;
-  if (current >= songs.length) current = 0;
-  playNext();
-});
-</script>
+<audio controls autoplay>
+  <source src="https://mmradio.netlify.app/songs/song1.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 </body>
 </html>
