@@ -8,20 +8,44 @@
     margin: 0;
     height: 100vh;
     display: flex;
-    align-items: center; /* vertical center */
-    justify-content: center; /* horizontal center */
-    background-color: black; /* နောက်ခံအနက် */
+    align-items: center;
+    justify-content: center;
+    background-color: black;
   }
-  
+  audio {
+    width: 300px;
+  }
 </style>
 </head>
 <body>
 
-<audio controls autoplay>
-  <source src="https://mmradio.netlify.app/songs/song1.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+<audio id="audioPlayer" controls autoplay></audio>
+
+<script>
+  const playlist = [
+    "https://mmradio.netlify.app/songs/song1.mp3",
+    "https://mmradio.netlify.app/songs/song2.mp3",
+    "https://mmradio.netlify.app/songs/song3.mp3"
+    "https://mmradio.netlify.app/songs/song4.mp3",
+    "https://mmradio.netlify.app/songs/song5.mp3"
+    // အောက်မှာ songs တွေ add လုပ်နိုင်ပါတယ်
+  ];
+
+  let current = 0;
+  const audio = document.getElementById("audioPlayer");
+
+  // ပထမအချိန် play
+  audio.src = playlist[current];
+  audio.play();
+
+  // song ပြီးသွားရင်
+  audio.addEventListener("ended", () => {
+    current++;
+    if (current >= playlist.length) current = 0; // loop back to first song
+    audio.src = playlist[current];
+    audio.play();
+  });
+</script>
 
 </body>
 </html>
-
