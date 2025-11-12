@@ -51,19 +51,24 @@
     const playBtn = document.getElementById('playBtn');
     const title = document.getElementById('title');
 
-    // 🎵 MP3 playlist (Netlify public URLs)
+    // MP3 playlist (Netlify public URLs)
     const songs = [
-      {src: "https://mmradio.netlify.app/song1.mp3", name: "Dhamma Song 1"},
-      {src: "https://mmradio.netlify.app/song2.mp3", name: "Dhamma Song 2"},
-      {src: "https://mmradio.netlify.app/song3.mp3", name: "Dhamma Song 3"},
-      {src: "https://mmradio.netlify.app/song4.mp3", name: "Dhamma Song 4"},
-      {src: "https://mmradio.netlify.app/song5.mp3", name: "Dhamma Song 5"}
+      {src: "https://mmradio.netlify.app/songs/song1.mp3", name: "Dhamma Song 1"},
+      {src: "https://mmradio.netlify.app/songs/song2.mp3", name: "Dhamma Song 2"},
+      {src: "https://mmradio.netlify.app/songs/song3.mp3", name: "Dhamma Song 3"},
+      {src: "https://mmradio.netlify.app/songs/song4.mp3", name: "Dhamma Song 4"},
+      {src: "https://mmradio.netlify.app/songs/song5.mp3", name: "Dhamma Song 5"},
+      // song6-song10 မထည့်သေးပါ → error မဖြစ်စေ
     ];
 
     let current = 0;
     let isPlaying = false;
 
     function playSong(index) {
+      if (!songs[index]) { // songs array မှာ element မရှိရင် loop ပြန်စ
+        current = 0;
+        index = 0;
+      }
       const song = songs[index];
       player.src = song.src;
       title.textContent = "Now Playing: " + song.name;
@@ -97,6 +102,9 @@
     player.addEventListener('error', (e) => {
       console.error("Audio Error:", e);
       title.textContent = "❌ Error loading song";
+      current++; // error ဖြစ်လည်း နောက်သီချင်းသို့ အလိုအလျောက်သွား
+      if (current >= songs.length) current = 0;
+      playSong(current);
     });
   </script>
 
