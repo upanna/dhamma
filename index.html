@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Myanmar FM Radio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
   body {
     margin: 0;
@@ -10,16 +13,127 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: black;
+    background: radial-gradient(circle at top, #111, #000);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    overflow: hidden;
   }
+
+  /* Soft Gold Glow Background */
+  .gold-glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle,
+      rgba(255,215,0,0.10),
+      rgba(255,150,0,0.06),
+      transparent
+    );
+    filter: blur(100px);
+    top: -10%;
+    animation: glow 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.15); opacity: 1; }
+  }
+
+  /* Floating music icons */
+  .icon {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0.20;
+    animation: float 6s infinite ease-in-out alternate;
+  }
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-40px); }
+  }
+  .note1 { left: 10%; top: 25%; animation-duration: 7s; }
+  .note2 { right: 12%; top: 65%; animation-duration: 5s; }
+  .guitar { left: 15%; bottom: 15%; font-size: 60px; animation-duration: 8s; }
+
+  /* Main Card */
+  .radio-card {
+    width: 500px;
+    padding: 35px 30px;
+    text-align: center;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 0 40px rgba(255,200,0,0.20);
+    z-index: 10;
+  }
+
+  /* Logo */
+  .logo {
+    width: 130px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
+  }
+
+  /* Title */
+  h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 26px;
+    text-shadow: 0 0 15px rgba(255,215,0,0.6);
+  }
+
+  /* Address */
+  .address {
+    font-size: 13px;
+    opacity: 0.85;
+    margin-bottom: 18px;
+    line-height: 1.5em;
+  }
+
+  /* Now Playing */
+  .now-playing {
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #ffdd77;
+    text-shadow: 0 0 6px rgba(255,200,0,0.5);
+  }
+
+  /* Player */
   audio {
-    width: 300px;
+    width: 100%;
+    filter: drop-shadow(0 0 10px rgba(255,215,0,0.4));
   }
+
 </style>
 </head>
 <body>
 
-<audio id="audioPlayer" controls autoplay muted></audio>
+<div class="gold-glow"></div>
+
+<!-- Floating music icons -->
+<div class="icon note1">🎵</div>
+<div class="icon note2">🎶</div>
+<div class="icon guitar">🎸</div>
+
+<div class="radio-card">
+
+  <img src="logo.png" class="logo">
+
+  <h2>🎧 Myanmar National FM Radio</h2>
+
+  <div class="address">
+    မြန်မာ့ရေဒီယို အသံလွှင့်ဌာန<br>
+    ညောင်လေးပင်မြို့၊ ညောင်လေးပင်ခရိုင်<br>
+    ပဲခူးတိုင်းဒေသကြီး
+  </div>
+
+  <div class="now-playing" id="nowPlaying">Now Playing: Song 1</div>
+
+  <audio id="audioPlayer" controls autoplay muted></audio>
+
+</div>
 
 <script>
   const playlist = [
@@ -37,8 +151,12 @@
 
   let current = 0;
   const audio = document.getElementById("audioPlayer");
+  const nowPlaying = document.getElementById("nowPlaying");
 
-  // ပထမသီချင်း autoplay (muted bypass)
+  function updateTitle() {
+    nowPlaying.textContent = "Now Playing: Song " + (current + 1);
+  }
+
   audio.src = playlist[current];
   audio.play();
 
@@ -46,12 +164,14 @@
     audio.muted = false;
   };
 
-  // သီချင်းပြီးရင် နောက်တစ်ပုဒ်သွားမယ်
+  updateTitle();
+
   audio.addEventListener("ended", () => {
     current++;
-    if (current >= playlist.length) current = 0; // loop
+    if (current >= playlist.length) current = 0;
     audio.src = playlist[current];
     audio.play();
+    updateTitle();
   });
 </script>
 
